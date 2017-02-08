@@ -1,6 +1,5 @@
 package com.joshuabgross.cs.examples.binary;
 
-import edu.blackburn.cs.cs372.bitshifting.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
