@@ -10,8 +10,11 @@ import java.io.*;
  * right shift with negative bytes (numbers between -127 and -1).
  * I think it has something to do with byte->int conversion, but I'm tired and
  * not sure and will fix tomorrow (and tomorrow and tomorrow creeps at this
- * petty pace from day to day until the last syllable of recorded time it is
- * a tale told by an idiot full of sound and fury signifying nothing)
+ * petty pace from day to day to the last syllable of recorded time and all our 
+ * yesterdays have lighted fools the way to dusty death out out brief candle 
+ * life's but a walking shadow a poor player that struts and frets his hour upon
+ * the stage and then is heard no more it is a tale told by an idiot full of
+ * sound and fury signifying nothing)
  *
  * @author joshua.gross gross.joshua.b@gmail.com
  */
@@ -133,17 +136,15 @@ public class BitShifting {
             build.append("\n");
             build.append(this.byteToBinary(left4)).append(" (").append(left4).append("): ").append(a).append("<<4");
             build.append("\n");
-            build.append(this.byteToBinary(right4)).append(" (").append(right4).append("): ").append(a).append(">>4");
+            build.append(this.byteToBinary(right4)).append(" (").append(right4).append("): ").append(a).append(">>4 (arithmetic shift***)");
             build.append("\n");
-            /*
-            build.append(this.byteToBinary(logicalRight4)).append(" (").append(logicalRight4).append("): ").append(a).append(">>>4 (zero not preserved)");
+            build.append(this.byteToBinary(logicalRight4)).append(" (").append(logicalRight4).append("): ").append(a).append(">>>4 (logical shift***)");
             build.append("\n");
-            build.append(this.intToBinary(logicalRight4i)).append(" (").append(logicalRight4i).append("): ").append(a).append(">>>4 (zero not preserved )");
-            build.append("\n");
-             */
             build.append(this.eachBit(a)).append(": each byte of ").append(a);
             build.append("\n");
             build.append(a).append(" is").append(this.isPositive(a) ? " not" : "").append(" negative based on the first bit");
+            build.append("\n");
+            build.append("*** - right shifting fails for neg. numbers because converting to int causes complement operation, filling in ones");
             build.append("\n");
             return build.toString();
         }
