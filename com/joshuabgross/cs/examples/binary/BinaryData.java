@@ -15,8 +15,7 @@ public class BinaryData {
 
     public static void main(String[] args) throws IOException {
         BinaryData gen = new BinaryData();
-        //gen.choose();
-        gen.read("sample1.bin");
+        gen.choose();
     }
 
     public static byte[] generateRandomBytes(int count) {
@@ -36,7 +35,7 @@ public class BinaryData {
                 this.generate(filename);
                 break;
             default:
-                BinaryData.read(filename);
+                new BitShifting(BinaryData.read(filename));
                 break;
         }
     }
