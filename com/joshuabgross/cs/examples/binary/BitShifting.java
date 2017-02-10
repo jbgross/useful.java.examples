@@ -6,15 +6,15 @@ import java.io.*;
  * This class demonstrates the bitwise operators in Java (although they are
  * common to C-like languages) by performing operations on one or a pair of
  * bytes. Instances read through an array of bytes, either randomly generated or
- * passed in via the constructor. Something is not working right about the
- * right shift with negative bytes (numbers between -127 and -1).
- * I think it has something to do with byte->int conversion, but I'm tired and
- * not sure and will fix tomorrow (and tomorrow and tomorrow creeps at this
- * petty pace from day to day to the last syllable of recorded time and all our 
- * yesterdays have lighted fools the way to dusty death out out brief candle 
- * life's but a walking shadow a poor player that struts and frets his hour upon
- * the stage and then is heard no more it is a tale told by an idiot full of
- * sound and fury signifying nothing)
+ * passed in via the constructor. Something is not working right about the right
+ * shift with negative bytes (numbers between -127 and -1). I think it has
+ * something to do with byte->int conversion, but I'm tired and not sure and
+ * will fix tomorrow (and tomorrow and tomorrow creeps at this petty pace from
+ * day to day to the last syllable of recorded time and all our yesterdays have
+ * lighted fools the way to dusty death out out brief candle life's but a
+ * walking shadow a poor player that struts and frets his hour upon the stage
+ * and then is heard no more it is a tale told by an idiot full of sound and
+ * fury signifying nothing)
  *
  * @author joshua.gross gross.joshua.b@gmail.com
  */
@@ -27,6 +27,43 @@ public class BitShifting {
      * use in argument passed to secondary constructor
      */
     public static final int DEFAULTCOUNT = 8;
+
+    public static String byteToBinary(byte c) {
+        return String.format("%8s", Integer.toBinaryString(c & 0xFF)).replace(' ', '0');
+    }
+
+    public static String intToBinary(int c) {
+        StringBuilder sb = new StringBuilder(String.format("%32s", Integer.toBinaryString(c & -1)).replace(' ', '0'));
+        sb.insert(8, " ").insert(17, " ").insert(26, " ");
+        return sb.toString();
+    }
+
+    public static String eachBit(byte c) {
+        StringBuilder buildf = new StringBuilder();
+        for (int i = 7; i >= 0; i--) {
+            buildf.append(c >> i & 1);
+        }
+        return buildf.toString();
+    }
+
+    public static String eachBit(int c) {
+        StringBuilder buildf = new StringBuilder();
+        for (int i = 31; i >= 0; i--) {
+            buildf.append(c >> i & 1);
+            if(i < 31 && i % 8 == 0)
+                buildf.append(" ");
+        }
+        return buildf.toString();
+    }
+    
+    /**
+     * Convenience method - must have file named sample1.bin
+     * @param args 
+     * @exception IOException
+     */
+    /*public static void main(String[] args) throws IOException {
+        new BitShifting(BinaryData.read("sample1.bin"));
+    }*/
 
     /**
      * With no argument, randomly generates DEFAULTCOUNT number of bytes and
@@ -99,18 +136,10 @@ public class BitShifting {
             this.b = b;
         }
 
-        private String byteToBinary(byte c) {
-            return String.format("%8s", Integer.toBinaryString(c & 0xFF)).replace(' ', '0');
-        }
-
-        private String intToBinary(int c) {
-            return String.format("%8s", Integer.toBinaryString(c & 0xFF)).replace(' ', '0');
-        }
-
         @Override
         public String toString() {
-            return this.byteToBinary(a) + " (" + a + "): a\n"
-                    + this.byteToBinary(b) + " (" + b + "): b";
+            return BitShifting.byteToBinary(a) + " (" + a + "): a\n"
+                    + BitShifting.byteToBinary(b) + " (" + b + "): b";
         }
 
         public String convert() {
@@ -120,41 +149,45 @@ public class BitShifting {
             byte xor = (byte) (a ^ b);
             byte acomp = (byte) ~a;
             byte left4 = (byte) (a << 4);
-            byte right4 = (byte) (a >> 4);
+            byte arithmeticRight4 = (byte) (a >> 4);
             byte logicalRight4 = (byte) (a >>> 4);
-            int logicalRight4i = a >>> 4;
+            int ai = a;
+            int arithmeticRight4i = ai >> 4;
+            int logicalRight4i = ai >>> 4;
 
             build.append(this);
             build.append("\n");
-            build.append(this.byteToBinary(and)).append(" (").append(and).append("): ").append(a).append(" & ").append(b);
+            build.append(BitShifting.byteToBinary(and)).append(" (").append(and).append("): ").append(a).append(" & ").append(b);
             build.append("\n");
-            build.append(this.byteToBinary(or)).append(" (").append(or).append("): ").append(a).append(" | ").append(b);
+            build.append(BitShifting.byteToBinary(or)).append(" (").append(or).append("): ").append(a).append(" | ").append(b);
             build.append("\n");
-            build.append(this.byteToBinary(xor)).append(" (").append(xor).append("): ").append(a).append(" ^ ").append(b);
+            build.append(BitShifting.byteToBinary(xor)).append(" (").append(xor).append("): ").append(a).append(" ^ ").append(b);
             build.append("\n");
-            build.append(this.byteToBinary(acomp)).append(" (").append(acomp).append("): ^").append(a);
+            build.append(BitShifting.byteToBinary(acomp)).append(" (").append(acomp).append("): ^").append(a);
             build.append("\n");
-            build.append(this.byteToBinary(left4)).append(" (").append(left4).append("): ").append(a).append("<<4");
+            build.append(BitShifting.byteToBinary(left4)).append(" (").append(left4).append("): ").append(a).append("<<4");
             build.append("\n");
-            build.append(this.byteToBinary(right4)).append(" (").append(right4).append("): ").append(a).append(">>4 (arithmetic shift***)");
+            build.append(BitShifting.byteToBinary(arithmeticRight4)).append(" (").append(arithmeticRight4).append("): ").append(a).append(">>4 (arithmetic shift***)");
             build.append("\n");
-            build.append(this.byteToBinary(logicalRight4)).append(" (").append(logicalRight4).append("): ").append(a).append(">>>4 (logical shift***)");
+            build.append(BitShifting.byteToBinary(logicalRight4)).append(" (").append(logicalRight4).append("): ").append(a).append(">>>4 (logical shift***)");
             build.append("\n");
-            build.append(this.eachBit(a)).append(": each byte of ").append(a);
+            build.append(BitShifting.intToBinary(logicalRight4i)).append(" (").append(logicalRight4i).append("): ").append(a).append(">>>4 (logical shift***)");
+            build.append("\n");
+            build.append("*** - right shifting fails for neg. bytes because converting to int causes complement operation, filling in ones");
+            build.append("\n");
+            build.append(BitShifting.eachBit(a)).append(": each byte of ").append(a).append(" via looping");
             build.append("\n");
             build.append(a).append(" is").append(this.isPositive(a) ? " not" : "").append(" negative based on the first bit");
             build.append("\n");
-            build.append("*** - right shifting fails for neg. numbers because converting to int causes complement operation, filling in ones");
+            build.append(BitShifting.eachBit(ai)).append(": each byte of integer ").append(ai).append(" via looping");
+            build.append("\n");
+            build.append(BitShifting.intToBinary(ai)).append("  (").append(ai).append("): a as an integer (ai)");
+            build.append("\n");
+            build.append(BitShifting.intToBinary(arithmeticRight4i)).append(" (").append(arithmeticRight4i).append("): ").append(ai).append(">>>4 (integer arithmetic shift)");
+            build.append("\n");
+            build.append(BitShifting.intToBinary(logicalRight4i)).append(" (").append(logicalRight4i).append("): ").append(ai).append(">>>4 (integer logical shift)");
             build.append("\n");
             return build.toString();
-        }
-
-        String eachBit(byte c) {
-            StringBuilder buildf = new StringBuilder();
-            for (int i = 7; i >= 0; i--) {
-                buildf.append(c >> i & 1);
-            }
-            return buildf.toString();
         }
 
         boolean isPositive(byte c) {
