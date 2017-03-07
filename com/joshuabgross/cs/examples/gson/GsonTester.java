@@ -3,7 +3,7 @@ package com.joshuabgross.cs.examples.gson;
 import com.google.gson.*;
 
 /**
- *
+ * API for GSon can be found at http://www.javadoc.io/doc/com.google.code.gson/gson/2.8.0
  * @author joshua.gross
  */
 public class GsonTester {
